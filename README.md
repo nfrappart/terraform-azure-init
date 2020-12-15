@@ -25,7 +25,7 @@ provider "azurerm" {
       version = "~> 2.39.0"
     }
   }
-  backend "\""azurerm"\"" {
+  backend "azurerm" {
     storage_account_name = $STORAGE_ACCOUNT_NAME
     container_name       = "terraform"
     key                  = "terraform.tfstate"

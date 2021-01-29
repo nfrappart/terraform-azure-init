@@ -85,7 +85,8 @@ SERVICE_PRINCIPAL_NAME=sp-terraform-$COMPANY
 # create service principal with contributor role for terraform
 echo "..."
 echo "### Creating Service Principal in Azure AD for Terraform ###"
-read -r -a SP_TERRAFORM <<< $(az ad sp create-for-rbac --name $SERVICE_PRINCIPAL_NAME --query "[appId,password]" -o tsv) #replace -A with -a to run in bash instead of zsh
+#read -r -a SP_TERRAFORM <<< $(az ad sp create-for-rbac --name $SERVICE_PRINCIPAL_NAME --query "[appId,password]" -o tsv) #replace -A with -a to run in bash instead of zsh
+mapfile -t SP_TERRAFORM< <(az ad sp create-for-rbac --name $SERVICE_PRINCIPAL_NAME --role Contributor --query "[appId,password]" -o tsv)
 SP_TERRAFORM_ID=${SP_TERRAFORM[0]}
 SP_TERRAFORM_SECRET=${SP_TERRAFORM[1]}
 
@@ -199,4 +200,4 @@ echo "### after that, run 'terraform init' to initialise your backend ###"
 sleep 5
 
 # launch terraform login script
-sh . terraform_login.sh
+source terraform_login.sh

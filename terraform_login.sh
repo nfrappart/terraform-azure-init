@@ -3,9 +3,9 @@
 #
 # use ":set fileformat=unix" in VIM before saving to change encoding issue if occurs
 echo ""
-echo "###################################################"
-echo "# You will be rediected to Azure login page in 5s #"
-echo "###################################################"
+echo "####################################################"
+echo "# You will be redirected to Azure login page in 5s #"
+echo "####################################################"
 sleep 5
 az login --output none
 
@@ -23,7 +23,7 @@ az account set -s $SUBSCRIPTION_ID
 
 # check if required variable are set
 if [ -z $KV_NAME ]; then
-  echo "please enter name of the KeyVault keeping SP ClientID, ClientSecret and Storage Account Key:"
+  echo "please enter name of the KeyVault storing SP ClientID, ClientSecret and Storage Account Key:"
   read KV_NAME
 fi
 if [ -z $SERVICE_PRINCIPAL_NAME ]; then

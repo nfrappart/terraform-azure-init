@@ -191,8 +191,10 @@ az keyvault secret set \
     key                  = "\""terraform.tfstate"\""
   }
  }
-" >> main.tf
+" > main.tf
+cat main.tf
 
+sleep 5
 echo "..."
 echo "..."
 echo "### The script will now launch terraform_login.sh and go through authentication again ###"

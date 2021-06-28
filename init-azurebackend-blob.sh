@@ -182,7 +182,7 @@ az keyvault secret set \
  terraform {
   required_providers {
     azurerm = {
-      version = "\""~> 2.39.0"\""
+      #version = "\""~> 2.65.0"\""
     }
   }
   backend "\""azurerm"\"" {

@@ -60,6 +60,8 @@ if [ "$RESOURCE_GROUP_NAME" = "" ]; then
     RESOURCE_GROUP_NAME=rg-terraform-$COMPANY
 fi
 echo "..."
+az account list-locations -o table --query "[*].{Location:name,Name:displayName}"
+echo "..."
 echo "### Location for Resource Group ###" 
 echo "(default is 'westeurope'):"
 read RESOURCE_GROUP_LOCATION
@@ -69,8 +71,9 @@ LOCATION_DEFAULT="westeurope"
 for LOCATION in ${LOCATIONS_LIST[@]}; do
    if [ "$RESOURCE_GROUP_LOCATION" = "${LOCATION}" ]; then
      break; #if location is valid, then exit the loop
+   else
+     RESOURCE_GROUP_LOCATION=$LOCATION_DEFAULT #if the input location value doesn't match, it is set to default value
    fi
-   RESOURCE_GROUP_LOCATION=$LOCATION_DEFAULT #if the input location value doesn't match, it is set to default value
 done
 
 STORAGE_ACCOUNT_NAME=tfstate$COMPANY #$SERIAL

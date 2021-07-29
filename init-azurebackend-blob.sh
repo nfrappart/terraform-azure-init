@@ -63,18 +63,15 @@ echo "..."
 az account list-locations -o table --query "[*].{Location:name,Name:displayName}"
 echo "..."
 echo "### Location for Resource Group ###" 
-echo "(default is 'westeurope'):"
+echo "type the desired location (default is 'westeurope'):"
 read RESOURCE_GROUP_LOCATION
 # check if location is valid
 read -r -a LOCATIONS_LIST <<< $(az account list-locations --query "[*].name" -o tsv)
 LOCATION_DEFAULT="westeurope"
-for LOCATION in ${LOCATIONS_LIST[@]}; do
-   if [ "$RESOURCE_GROUP_LOCATION" = "${LOCATION}" ]; then
-     break; #if location is valid, then exit the loop
-   else
-     RESOURCE_GROUP_LOCATION=$LOCATION_DEFAULT #if the input location value doesn't match, it is set to default value
-   fi
-done
+
+if [ "$RESOURCE_GROUP_LOCATION" = "" ]; then
+    RESOURCE_GROUP_LOCATION=$LOCATION_DEFAULT #if the input location value doesn't match, it is set to default value
+fi
 
 STORAGE_ACCOUNT_NAME=tfstate$COMPANY #$SERIAL
 CONTAINER_NAME=tfstate
@@ -109,6 +106,7 @@ az storage account create \
     --resource-group $RESOURCE_GROUP_NAME \
     --sku Standard_LRS \
     --encryption-services blob \
+    --location $RESOURCE_GROUP_LOCATION \
     -o none
 
 # get storage account key
@@ -184,9 +182,7 @@ az keyvault secret set \
  }
  terraform {
   required_providers {
-    azurerm = {
-      version = "\""~> 2.39.0"\""
-    }
+    azurerm = {}
   }
   backend "\""azurerm"\"" {
     storage_account_name = "\""$STORAGE_ACCOUNT_NAME"\""
